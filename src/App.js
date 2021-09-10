@@ -11,9 +11,9 @@ const App = () => {
   return (
     <div>
       <HeaderBlock title="This is new title" descr="This is new description!" />
-      <Layout title="This is new title" descr="This is new description!" urlBg = {LandscapeImage}/>
-      <Layout title="This is new title" descr="This is new description!"  />
-      <Layout title="This is new title" descr="This is new description!" urlBg= {LandscapeImage}  />
+      <Layout title="This is new title" descr="This is new description!" urlBg = {LandscapeImage} colorBg=''/>
+      <Layout title="This is new title" descr="This is new description!" urlBg='' colorBg='lightblue'/>
+      <Layout title="This is new title" descr="This is new description!" urlBg= {LandscapeImage} colorBg='' />
       <Footer />
 
       

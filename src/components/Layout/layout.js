@@ -1,9 +1,9 @@
 import s from './layout.module.css';
 
-const Layout = ({ title, descr, urlBg, colorBg = 'lightblue' }) => {
+const Layout = ({ title, descr, urlBg, colorBg }) => {
   const styleRoot = urlBg
     ? { backgroundImage: `url(${urlBg})` }
-    : { background: `${colorBg}` };
+    : { backgroundColor: `${colorBg}` };
   return (
     <section className={s.root} style={styleRoot}>
       <div className={s.wrapper}>
