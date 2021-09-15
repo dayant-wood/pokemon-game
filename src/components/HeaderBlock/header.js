@@ -1,6 +1,10 @@
 import s from './header.module.css';
 
-const HeaderBlock = ({ title, descr }) => {
+const HeaderBlock = ({ title, descr, onClickButton }) => {
+  const handleClick = () => {
+    console.log('<Header>');
+    onClickButton && onClickButton('game');
+  };
   return (
     <>
       <header className={s.root}>
@@ -8,6 +12,7 @@ const HeaderBlock = ({ title, descr }) => {
         <div className={s.container}>
           {title ? <h1>{title}</h1> : null}
           {descr ? <p>{descr}</p> : null}
+          <button onClick={handleClick}>Start Game</button>
         </div>
       </header>
     </>
