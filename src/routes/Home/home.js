@@ -10,7 +10,6 @@ import pokemons from '../../data/pokemon.json';
 
 const HomePage = ( {onChangePage}) => {
   const handleClickButton = ( page) => {
-    console.log('<HomePage>');
     onChangePage && onChangePage(page);
   }
 
