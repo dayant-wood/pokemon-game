@@ -1,17 +1,17 @@
-.root {
+#navbar {
   position: fixed;
   z-index: 9999;
   width: 100%;
-  padding: 1rem;
+  /* padding: 1rem; */
   display: flex;
   justify-content: center;
 }
 
-.root.bgActive {
+#navbar.bgActive {
   background: #181d23;
 }
 
-.root .navWrapper {
+#navbar .navWrapper {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -20,8 +20,8 @@
   padding: 0 2rem;
 }
 
-.root .brand {
-  font-size: 1.6rem;
+#navbar .brand {
+  font-size: 1rem;
   color: #fafafa;
   cursor: default;
 }
