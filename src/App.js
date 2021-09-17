@@ -16,8 +16,6 @@ const App = () => {
   console.log(match);
   return (
     <Switch>
-      <Route path="/NotFound" component={NotFound} />
-
       <Route>
         <>
           <MenuHeader bgActive={!match.isExact} />
@@ -29,7 +27,7 @@ const App = () => {
               <Route path="/game" component={GamePage} />
               <Route path="/about" component={AboutPage} />
               <Route path="/contact" component={ContactPage} />
-
+              <Route path="/NotFound" component={NotFound} />
               <Route
                 path="/about"
                 render={() => <h1> This is page About! </h1>}
