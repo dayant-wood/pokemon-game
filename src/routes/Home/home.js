@@ -5,23 +5,20 @@ import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import MenuHeader from '../../components/MenuHeader/MenuHeader';
 import LandscapeImage from '../../assets/bg3.jpg';
 
-import s from './home.module.css'
+import s from './home.module.css';
 import pokemons from '../../data/pokemon.json';
 
-const HomePage = ( {onChangePage}) => {
-  const handleClickButton = ( page) => {
+const HomePage = ({ onChangePage }) => {
+  const handleClickButton = page => {
     onChangePage && onChangePage(page);
-  }
+  };
 
   return (
     <div>
-
-      <MenuHeader/>
-
       <HeaderBlock
         title="Pokemon Game"
         descr="This is simple trimple triad card game"
-        onClickButton = {handleClickButton}
+        onClickButton={handleClickButton}
       />
       <Layout title="This is new title" urlBg={LandscapeImage} colorBg="">
         <p>
@@ -41,22 +38,6 @@ const HomePage = ( {onChangePage}) => {
         </p>
       </Layout>
 
-      <Layout title="This is new title" urlBg="" colorBg="lightblue">
-        <div className={s.flex}>
-          {pokemons.map(item => (
-            <PokemonCard
-              key={item.id}
-              name={item.name}
-              img={item.img}
-              id={item.id}
-              type={item.type}
-              values={item.values}
-            />
-          ))}
-          ;
-        </div>
-      </Layout>
-
       <Layout title="This is new title" urlBg={LandscapeImage} colorBg="">
         <p>
           In the game two players face off against one another, one side playing
@@ -74,8 +55,6 @@ const HomePage = ( {onChangePage}) => {
           instead.
         </p>
       </Layout>
-
-      <Footer />
     </div>
   );
 };
