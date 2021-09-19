@@ -8,12 +8,13 @@ const PokemonCard = ({
   img,
   id,
   type,
-  values: { top, left, right, bottom },
+  values,
   isActive = false,
   onClickPokemon,
+  objID,
 }) => {
   const handlerClick = () => {
-    onClickPokemon && onClickPokemon(id);
+    onClickPokemon && onClickPokemon(id, objID);
   };
 
   return (
@@ -26,10 +27,10 @@ const PokemonCard = ({
           <div className={`${s.wrap} ${s.front}`}>
             <div className={`${s.pokemon} ${s[type]}`}>
               <div className={s.values}>
-                <div className={`${s.count} ${s.top}`}> {top}</div>
-                <div className={`${s.count} ${s.right}`}>{right}</div>
-                <div className={`${s.count} ${s.bottom}`}>{bottom}</div>
-                <div className={`${s.count} ${s.left}`}>{left}</div>
+                <div className={`${s.count} ${s.top}`}> {values.top}</div>
+                <div className={`${s.count} ${s.right}`}>{values.right}</div>
+                <div className={`${s.count} ${s.bottom}`}>{values.bottom}</div>
+                <div className={`${s.count} ${s.left}`}>{values.left}</div>
               </div>
               <div className={s.imgContainer}>
                 <img src={img} alt={name} />
