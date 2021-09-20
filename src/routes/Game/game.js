@@ -27,17 +27,16 @@ const GamePage = () => {
         const pokemon = { ...item[1] };
         if (pokemon.id === id) {
           pokemon.active = true;
+          database.ref('pokemons/' + objID).set({
+            ...pokemons[objID],
+            active: !isActive,
+          });
         }
 
         acc[item[0]] = pokemon;
 
         return acc;
       }, {});
-    });
-
-    database.ref('pokemons/' + objID).set({
-      ...pokemons[objID],
-      active: !isActive,
     });
   };
 
