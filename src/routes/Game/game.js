@@ -1,43 +1,77 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
+import database from '../../service/firebase';
 import Layout from '../../components/Layout/layout';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
+import data from '../../data/pokemon.json';
 import s from './game.module.css';
-import pokemonsList from '../../data/pokemon.json';
 
 const GamePage = () => {
   const history = useHistory();
 
-  const handleClick = () => {
-    history.push('/');
+  // const handleClick = () => {
+  //   history.push('/');
+  // };
+
+  const [pokemons, setPokemonsState] = useState({});
+
+  useEffect(() => {
+    database.ref('pokemons').once('value', snapshot => {
+      setPokemonsState(snapshot.val());
+    });
+  }, [pokemons]);
+
+  const handleOpenPokemons = (id, objID, isActive) => {
+    setPokemonsState(prevState => {
+      return Object.entries(prevState).reduce((acc, item) => {
+        const pokemon = { ...item[1] };
+        if (pokemon.id === id) {
+          pokemon.active = true;
+          database.ref('pokemons/' + objID).set({
+            ...pokemons[objID],
+            active: !isActive,
+          });
+        }
+
+        acc[item[0]] = pokemon;
+
+        return acc;
+      }, {});
+    });
   };
 
-  const [pokemons, setPokemonsState] = useState(pokemonsList.slice(0, 5));
+  const addNewPock = () => {
+    const getRandom = max => {
+      return Math.floor(Math.random() * max);
+    };
 
-  const handleOpenPokemons = id => {
-    setPokemonsState(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, active: !item.active } : item
-      )
-    );
+    let randomId = getRandom(data.length);
+
+    const newKey = database.ref().child('pokemons').push().key;
+    database.ref('pokemons/' + newKey).set(data[randomId]);
   };
+
   return (
     <>
-      <button onClick={handleClick}>Return to Home</button>
+      {/* <button onClick={handleClick}>Return to Home</button> */}
+      <button onClick={addNewPock}>Add new pockemon</button>
       <Layout colorBg="lightblue">
         <div className={s.flex}>
-          {pokemons.map(pokemon => (
-            <PokemonCard
-              key={pokemon.id}
-              values={pokemon.values}
-              name={pokemon.name}
-              type={pokemon.type}
-              id={pokemon.id}
-              img={pokemon.img}
-              onClickPokemon={handleOpenPokemons}
-              isActive={pokemon.active}
-            />
-          ))}
+          {Object.entries(pokemons).map(
+            ([key, { name, values, type, id, img, active }]) => (
+              <PokemonCard
+                key={key}
+                objID={key}
+                values={values}
+                name={name}
+                type={type}
+                id={id}
+                img={img}
+                onClickPokemon={handleOpenPokemons}
+                isActive={active}
+              />
+            )
+          )}
         </div>
       </Layout>
     </>
