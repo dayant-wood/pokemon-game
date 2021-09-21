@@ -15,11 +15,15 @@ const GamePage = () => {
 
   const [pokemons, setPokemonsState] = useState({});
 
-  useEffect(() => {
+  const getPokemon = () => {
     database.ref('pokemons').once('value', snapshot => {
       setPokemonsState(snapshot.val());
     });
-  }, [pokemons]);
+  };
+
+  useEffect(() => {
+    getPokemon();
+  }, []);
 
   const handleOpenPokemons = (id, objID, isActive) => {
     setPokemonsState(prevState => {
@@ -49,6 +53,7 @@ const GamePage = () => {
 
     const newKey = database.ref().child('pokemons').push().key;
     database.ref('pokemons/' + newKey).set(data[randomId]);
+    getPokemon();
   };
 
   return (
