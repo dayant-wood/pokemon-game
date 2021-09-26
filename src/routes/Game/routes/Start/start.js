@@ -13,17 +13,17 @@ const StartPage = () => {
 
   const [pokemons, setPokemonsState] = useState({});
   const history = useHistory();
+
   useEffect(() => {
     firebase.getPokemonSoket(pokemons => {
       setPokemonsState(pokemons);
     });
-
     return () => firebase.offPokemonSoket();
   }, []);
 
   const handleChangeSelected = key => {
     const pokemon = { ...pokemons[key] };
-    console.log(pokemon);
+
     pokemonContext.onSelectedPokemons(key, pokemon);
     setPokemonsState(prevState => ({
       ...prevState,

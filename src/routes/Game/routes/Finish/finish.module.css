@@ -1,0 +1,12 @@
+.card {
+  width: 250px;
+  height: 350px;
+  cursor: pointer;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
