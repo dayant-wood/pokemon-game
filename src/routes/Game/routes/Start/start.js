@@ -23,7 +23,7 @@ const StartPage = () => {
 
   const handleChangeSelected = key => {
     const pokemon = { ...pokemons[key] };
-
+    // delete pokemon.selected;
     pokemonContext.onSelectedPokemons(key, pokemon);
     setPokemonsState(prevState => ({
       ...prevState,
@@ -40,7 +40,6 @@ const StartPage = () => {
 
   return (
     <>
-      {/* <button onClick={handleClick}>Return to Home</button> */}
       <button
         onClick={handlerStartGame}
         disabled={Object.keys(pokemonContext.pokemons).length < 5}

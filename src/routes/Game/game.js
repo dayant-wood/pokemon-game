@@ -32,7 +32,7 @@ const GamePage = () => {
   };
 
   const handleSelectedPokemons2 = poks => {
-    setSelectedPokemons2({ ...poks });
+    return setSelectedPokemons2([...poks]);
   };
 
   const cleanPokemons = () => {

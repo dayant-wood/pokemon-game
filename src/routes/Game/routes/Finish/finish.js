@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { PokemonContext } from '../../../../context/pokemonContext';
 import PokemonCard from '../../../../components/PokemonCard/PokemonCard';
@@ -10,44 +10,55 @@ const FinishPage = () => {
   const { pokemons, player2Pokemons } = useContext(PokemonContext);
   const pokemonContext = useContext(PokemonContext);
   const [choosePokemon, setChoosePokemon] = useState({});
+  // const [player2, setPlayer2] = useState([]);
   const [player2, setPlayer2] = useState(player2Pokemons);
+  const [isDisabled, setDisabled] = useState(true);
+  const [selected, isSelected] = useState(null);
   const firebase = useContext(FireBaseContext);
   const history = useHistory();
 
-  const handlerFinish = () => {
-    pokemonContext.clearContext();
-    if (choosePokemon && choosePokemon != {}) {
-      firebase.addPokemon(choosePokemon);
+  const handlerBackToStart = () => {
+    if (pokemonContext.winner === 0 || pokemonContext.winner === 2) {
+      pokemonContext.clearContext();
+      history.replace('/game');
     }
 
-    history.replace('/game');
+    if (choosePokemon && choosePokemon != {}) {
+      pokemonContext.clearContext();
+      const selectedPokemon = player2.find(item => item.selected);
+      if (selectedPokemon) {
+        firebase.addPokemon({
+          ...selectedPokemon,
+          selected: !selectedPokemon.selected,
+        });
+      }
+
+      history.replace('/game');
+    }
   };
 
-  // const handlerChooseCard = id => {
-  //   if (pokemonContext.winner === 1) {
-  //     Object.values(player2Pokemons).map(item => {
-  //       if (item.id === id) {
-  //         setChoosePokemon(item);
-  //         item.selected = true;
-  //       }
-
-  //       return item;
-  //     });
-  //   }
-  // };
+  if (
+    isDisabled === true &&
+    (pokemonContext.winner === 0 || pokemonContext.winner === 2)
+  ) {
+    setDisabled(false);
+  }
 
   const handlerChooseCard = id => {
-    setPlayer2(prevState => {
-      return Object.values(prevState).reduce((acc, item) => {
-        item.isSelected = false;
-        if (item.id === id) {
-          setChoosePokemon(item);
-          item.isSelected = true;
-        }
-        acc.push(item);
-        return acc;
+    if (pokemonContext.winner === 1) {
+      setPlayer2(prevState => {
+        return prevState.reduce((acc, item) => {
+          item.selected = false;
+          if (item.id === id) {
+            item.selected = true;
+            setChoosePokemon(item);
+          }
+          acc.push(item);
+          return acc;
+        }, []);
       });
-    }, []);
+      setDisabled(false);
+    }
   };
 
   return (
@@ -70,10 +81,12 @@ const FinishPage = () => {
           )}
         </div>
 
-        <button onClick={handlerFinish}>END GAME</button>
+        <button disabled={isDisabled} onClick={handlerBackToStart}>
+          END GAME
+        </button>
 
         <div className={s.flex}>
-          {Object.entries(player2Pokemons).map(
+          {Object.entries(player2).map(
             ([key, { values, id, name, type, img, selected }]) => (
               <PokemonCard
                 className={s.card}
