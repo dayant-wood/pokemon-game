@@ -16,7 +16,7 @@ import AboutPage from './routes/About/about';
 import ContactPage from './routes/Contacts/contact';
 import NotFound from './routes/NotFound/NotFound';
 import { FireBaseContext } from './context/firebaseContext';
-import Firebase from './service/firebase';
+import FirebaseClass from './service/firebase';
 
 import s from './App.module.css';
 
@@ -26,7 +26,7 @@ const App = () => {
     location.pathname === '/' || location.pathname === '/game/board';
 
   return (
-    <FireBaseContext.Provider value={new Firebase()}>
+    <FireBaseContext.Provider value={FirebaseClass}>
       <Switch>
         <Route>
           <>

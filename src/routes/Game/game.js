@@ -12,20 +12,20 @@ const GamePage = () => {
   const [selectedPokemon2, setSelectedPokemons2] = useState([]);
   const [winner, setWinner] = useState(0);
 
-  const handlerSelectedPokemons = (key, pokemon) => {
-    setSelectedPokemons(prevState => {
-      if (prevState[key]) {
-        const copyState = { ...prevState };
-        delete copyState[key];
+  // const handlerSelectedPokemons = (key, pokemon) => {
+  //   setSelectedPokemons(prevState => {
+  //     if (prevState[key]) {
+  //       const copyState = { ...prevState };
+  //       delete copyState[key];
 
-        return copyState;
-      }
-      return {
-        ...prevState,
-        [key]: pokemon,
-      };
-    });
-  };
+  //       return copyState;
+  //     }
+  //     return {
+  //       ...prevState,
+  //       [key]: pokemon,
+  //     };
+  //   });
+  // };
 
   const handleSetWinner = id => {
     setWinner(id);
@@ -49,7 +49,7 @@ const GamePage = () => {
       value={{
         pokemons: selectedPokemon,
         player2Pokemons: selectedPokemon2,
-        onSelectedPokemons: handlerSelectedPokemons,
+        // onSelectedPokemons: handlerSelectedPokemons,
         onSelectedPokemons2: handleSelectedPokemons2,
         winner: winner,
         onSetWinner: handleSetWinner,

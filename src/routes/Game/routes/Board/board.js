@@ -4,6 +4,12 @@ import { useEffect, useState } from 'react/cjs/react.development';
 import { PokemonContext } from '../../../../context/pokemonContext';
 import PokemonCard from '../../../../components/PokemonCard/PokemonCard';
 import PlayerBoard from './component/playerBoard/playerBoard';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectedPokemonPlayer2,
+  selectedPokemonPlayer1,
+  handleSelectedPokemonsEnemy,
+} from '../../../../store/pokemons';
 import s from './board.module.css';
 
 const counterWin = (board, player1, player2) => {
@@ -24,10 +30,13 @@ const counterWin = (board, player1, player2) => {
 const BoardPage = () => {
   const { pokemons, clearContext, winner } = useContext(PokemonContext);
   const context = useContext(PokemonContext);
+  const pokemonPlayer1 = useSelector(selectedPokemonPlayer1);
+  const dispatch = useDispatch();
+  // const pokemonsEnemyRedux = useSelector(selectedPokemonPlayer2);
   const [board, setBoard] = useState([]);
 
   const [player1, setPlayer1] = useState(() => {
-    return Object.values(pokemons).map(item => ({
+    return Object.values(pokemonPlayer1).map(item => ({
       ...item,
       possession: 'blue',
     }));
@@ -55,7 +64,8 @@ const BoardPage = () => {
         ...item,
         possession: 'red',
       }));
-      context.onSelectedPokemons2(result);
+
+      dispatch(handleSelectedPokemonsEnemy(result));
       return result;
     });
   }, []);

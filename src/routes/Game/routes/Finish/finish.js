@@ -10,7 +10,6 @@ const FinishPage = () => {
   const { pokemons, player2Pokemons } = useContext(PokemonContext);
   const pokemonContext = useContext(PokemonContext);
   const [choosePokemon, setChoosePokemon] = useState({});
-  // const [player2, setPlayer2] = useState([]);
   const [player2, setPlayer2] = useState(player2Pokemons);
   const [isDisabled, setDisabled] = useState(true);
   const [selected, isSelected] = useState(null);
