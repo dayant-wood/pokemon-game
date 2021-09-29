@@ -9,6 +9,7 @@ export const slice = createSlice({
     error: null,
     selectedPokemons: {},
     selectedPokemonsEnemy: {},
+    winner: null,
   },
   reducers: {
     fetchPokemons: state => ({
@@ -44,6 +45,21 @@ export const slice = createSlice({
         selectedPokemonsEnemy: { ...action.payload },
       };
     },
+
+    clearState: state => {
+      return {
+        ...state,
+        selectedPokemons: {},
+        selectedPokemonsEnemy: {},
+      };
+    },
+
+    handleSetWinner: (state, action) => {
+      return {
+        ...state,
+        winner: action.payload,
+      };
+    },
   },
 });
 
@@ -55,6 +71,8 @@ export const {
   selectedPokemonsEnemy,
   handleSelectedPokemons,
   handleSelectedPokemonsEnemy,
+  clearState,
+  handleSetWinner,
 } = slice.actions;
 
 export const getPokemonsAsync = () => async dispatch => {
@@ -69,5 +87,6 @@ export const selectPokemonsData = state => state.pokemons.data;
 export const selectedPokemonPlayer1 = state => state.pokemons.selectedPokemons;
 export const selectedPokemonPlayer2 = state =>
   state.pokemons.selectedPokemonsEnemy;
+export const winner = state => state.pokemons.winner;
 
 export default slice.reducer;

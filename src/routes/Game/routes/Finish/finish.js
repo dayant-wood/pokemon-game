@@ -1,56 +1,54 @@
-import React, { useState } from 'react';
-import { useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { PokemonContext } from '../../../../context/pokemonContext';
 import PokemonCard from '../../../../components/PokemonCard/PokemonCard';
+import FirebaseClass from '../../../../service/firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  clearState,
+  winner,
+  selectedPokemonPlayer1,
+  selectedPokemonPlayer2,
+} from '../../../../store/pokemons';
 import s from './finish.module.css';
-import { FireBaseContext } from '../../../../context/firebaseContext';
 
 const FinishPage = () => {
-  const { pokemons, player2Pokemons } = useContext(PokemonContext);
-  const pokemonContext = useContext(PokemonContext);
-  const [choosePokemon, setChoosePokemon] = useState({});
-  const [player2, setPlayer2] = useState(player2Pokemons);
-  const [isDisabled, setDisabled] = useState(true);
-  const [selected, isSelected] = useState(null);
-  const firebase = useContext(FireBaseContext);
   const history = useHistory();
+  const pokemonsPlayer1Redux = useSelector(selectedPokemonPlayer1);
+  const pokemonsPlayer2Redux = useSelector(selectedPokemonPlayer2);
+  const winnerRedux = useSelector(winner);
 
-  const handlerBackToStart = () => {
-    if (pokemonContext.winner === 0 || pokemonContext.winner === 2) {
-      pokemonContext.clearContext();
+  const [choosePokemon, setChoosePokemon] = useState([]);
+  const [isDisabled, setDisabled] = useState(true);
+  const [player2, setPlayer2] = useState(Object.entries(pokemonsPlayer2Redux));
+
+  const dispatch = useDispatch();
+
+  const handlerBackToStart = e => {
+    if (winnerRedux === 0 || winnerRedux === 2) {
+      dispatch(clearState());
       history.replace('/game');
     }
 
-    if (choosePokemon && choosePokemon != {}) {
-      pokemonContext.clearContext();
-      const selectedPokemon = player2.find(item => item.selected);
-      if (selectedPokemon) {
-        firebase.addPokemon({
-          ...selectedPokemon,
-          selected: !selectedPokemon.selected,
-        });
-      }
-
+    if (winnerRedux === 1) {
+      dispatch(clearState());
+      FirebaseClass.addPokemon({ ...choosePokemon, selected: false });
       history.replace('/game');
     }
   };
 
-  if (
-    isDisabled === true &&
-    (pokemonContext.winner === 0 || pokemonContext.winner === 2)
-  ) {
+  if (isDisabled === true && (winnerRedux === 0 || winnerRedux === 2)) {
     setDisabled(false);
   }
 
   const handlerChooseCard = id => {
-    if (pokemonContext.winner === 1) {
+    if (winnerRedux === 1) {
       setPlayer2(prevState => {
         return prevState.reduce((acc, item) => {
-          item.selected = false;
-          if (item.id === id) {
-            item.selected = true;
-            setChoosePokemon(item);
+          item[1] = { ...item[1], selected: false };
+
+          if (item[1].id === id) {
+            item[1].selected = true;
+            setChoosePokemon(item[1]);
           }
           acc.push(item);
           return acc;
@@ -64,7 +62,7 @@ const FinishPage = () => {
     <>
       <div className="root">
         <div className={s.flex}>
-          {Object.entries(pokemons).map(
+          {Object.entries(pokemonsPlayer1Redux).map(
             ([key, { values, id, name, type, img, possession, isActive }]) => (
               <PokemonCard
                 className={s.card}
@@ -85,22 +83,20 @@ const FinishPage = () => {
         </button>
 
         <div className={s.flex}>
-          {Object.entries(player2).map(
-            ([key, { values, id, name, type, img, selected }]) => (
-              <PokemonCard
-                className={s.card}
-                key={key}
-                values={values}
-                name={name}
-                type={type}
-                id={id}
-                img={img}
-                isActive={true}
-                isSelected={selected}
-                onClickPokemon={handlerChooseCard}
-              />
-            )
-          )}
+          {player2.map(([key, { values, id, name, type, img, selected }]) => (
+            <PokemonCard
+              className={s.card}
+              key={key}
+              values={values}
+              name={name}
+              type={type}
+              id={id}
+              img={img}
+              isActive={true}
+              isSelected={selected}
+              onClickPokemon={handlerChooseCard}
+            />
+          ))}
         </div>
       </div>
     </>
