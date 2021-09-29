@@ -1,9 +1,14 @@
-import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react/cjs/react.development';
-import { PokemonContext } from '../../../../context/pokemonContext';
 import PokemonCard from '../../../../components/PokemonCard/PokemonCard';
 import PlayerBoard from './component/playerBoard/playerBoard';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectedPokemonPlayer2,
+  selectedPokemonPlayer1,
+  handleSelectedPokemonsEnemy,
+  handleSetWinner,
+} from '../../../../store/pokemons';
 import s from './board.module.css';
 
 const counterWin = (board, player1, player2) => {
@@ -22,12 +27,12 @@ const counterWin = (board, player1, player2) => {
 };
 
 const BoardPage = () => {
-  const { pokemons, clearContext, winner } = useContext(PokemonContext);
-  const context = useContext(PokemonContext);
+  const pokemonPlayer1 = useSelector(selectedPokemonPlayer1);
+  const dispatch = useDispatch();
   const [board, setBoard] = useState([]);
 
   const [player1, setPlayer1] = useState(() => {
-    return Object.values(pokemons).map(item => ({
+    return Object.values(pokemonPlayer1).map(item => ({
       ...item,
       possession: 'blue',
     }));
@@ -55,7 +60,8 @@ const BoardPage = () => {
         ...item,
         possession: 'red',
       }));
-      context.onSelectedPokemons2(result);
+
+      dispatch(handleSelectedPokemonsEnemy(result));
       return result;
     });
   }, []);
@@ -104,20 +110,24 @@ const BoardPage = () => {
       const [count1, count2] = counterWin(board, player1, player2);
       if (count1 > count2) {
         alert('WIN');
-        context.onSetWinner(1);
+        // context.onSetWinner(2);
+        dispatch(handleSetWinner(1));
       } else if (count1 < count2) {
         alert('LOSE');
-        context.onSetWinner(2);
+        // context.onSetWinner(2);
+        dispatch(handleSetWinner(2));
       } else {
         alert('DRAW');
-        context.onSetWinner(0);
+        // context.onSetWinner(0);
+        dispatch(handleSetWinner(3));
       }
       history.replace('/game/finish');
     }
   }, [steps]);
 
   const history = useHistory();
-  if (Object.keys(pokemons).length === 0) {
+
+  if (Object.keys(pokemonPlayer1).length === 0) {
     history.replace('/game');
   }
 

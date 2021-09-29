@@ -1,30 +1,44 @@
 import { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-
+import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../../../components/Layout/layout';
 import PokemonCard from '../../../../components/PokemonCard/PokemonCard';
-import { FireBaseContext } from '../../../../context/firebaseContext';
-import { PokemonContext } from '../../../../context/pokemonContext';
+import FirebaseClass from '../../../../service/firebase';
 import s from './start.module.css';
+import {
+  getPokemons,
+  getPokemonsAsync,
+  selectPokemonsData,
+  selectPokemonsLoading,
+  selectedPokemonPlayer1,
+  handleSelectedPokemons,
+} from '../../../../store/pokemons';
 
 const StartPage = () => {
-  const firebase = useContext(FireBaseContext);
-  const pokemonContext = useContext(PokemonContext);
-
+  const pokemonsRedux = useSelector(selectPokemonsData);
+  const selectedPokemonsRedux = useSelector(selectedPokemonPlayer1);
+  const isLoading = useSelector(selectPokemonsLoading);
+  const dispatch = useDispatch();
   const [pokemons, setPokemonsState] = useState({});
   const history = useHistory();
 
   useEffect(() => {
-    firebase.getPokemonSoket(pokemons => {
+    FirebaseClass.getPokemonSoket(pokemons => {
       setPokemonsState(pokemons);
+      dispatch(getPokemonsAsync());
     });
-    return () => firebase.offPokemonSoket();
+    return () => FirebaseClass.offPokemonSoket();
   }, []);
+
+  useEffect(() => {
+    setPokemonsState(pokemonsRedux);
+  }, [pokemonsRedux]);
+  console.log(pokemonsRedux);
 
   const handleChangeSelected = key => {
     const pokemon = { ...pokemons[key] };
-    // delete pokemon.selected;
-    pokemonContext.onSelectedPokemons(key, pokemon);
+    console.log(pokemon);
+    dispatch(handleSelectedPokemons({ key, pokemon }));
     setPokemonsState(prevState => ({
       ...prevState,
       [key]: {
@@ -42,7 +56,7 @@ const StartPage = () => {
     <>
       <button
         onClick={handlerStartGame}
-        disabled={Object.keys(pokemonContext.pokemons).length < 5}
+        disabled={Object.keys(selectedPokemonsRedux).length < 5}
       >
         Start Game
       </button>
@@ -60,7 +74,7 @@ const StartPage = () => {
                 img={img}
                 onClickPokemon={() => {
                   if (
-                    Object.keys(pokemonContext.pokemons).length < 5 ||
+                    Object.keys(selectedPokemonsRedux).length < 5 ||
                     selected
                   ) {
                     handleChangeSelected(key);
