@@ -1,0 +1,19 @@
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttonLogin {
+  margin-left: 0;
+}
+
+span {
+  font-size: 15px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+span.hover {
+  color: #f300b4;
+}
