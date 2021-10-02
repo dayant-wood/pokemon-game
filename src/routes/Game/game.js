@@ -2,7 +2,6 @@ import { useRouteMatch, Switch, Route } from 'react-router-dom';
 import StartPage from './routes/Start/start';
 import BoardPage from './routes/Board/board';
 import FinishPage from './routes/Finish/finish';
-import { PokemonContext } from '../../context/pokemonContext';
 
 const GamePage = () => {
   const match = useRouteMatch();
