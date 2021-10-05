@@ -33,7 +33,6 @@ const StartPage = () => {
   useEffect(() => {
     setPokemonsState(pokemonsRedux);
   }, [pokemonsRedux]);
-  console.log(pokemonsRedux);
 
   const handleChangeSelected = key => {
     const pokemon = { ...pokemons[key] };

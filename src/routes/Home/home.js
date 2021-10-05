@@ -2,19 +2,13 @@ import HeaderBlock from '../../components/HeaderBlock/header';
 import Layout from '../../components/Layout/layout';
 
 import LandscapeImage from '../../assets/bg3.jpg';
-import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { plusAction, selectCount } from '../../store/counter';
 
 const HomePage = () => {
-  const count = useSelector(selectCount);
-  console.log(count);
-  const dispatch = useDispatch();
   const history = useHistory();
 
   const handleClickButton = () => {
-    // history.push('/game');
-    dispatch(plusAction(1));
+    history.push('/game');
   };
 
   return (
@@ -22,11 +16,10 @@ const HomePage = () => {
       <HeaderBlock
         title="Pokemon Game"
         descr="This is simple trimple triad card game"
-        // onClickButton={handleClickButton}
+        onClickButton={handleClickButton}
       />
 
       <Layout title="This is new title" urlBg={LandscapeImage} colorBg="">
-        <button onClick={handleClickButton}></button>
         <p>
           In the game two players face off against one another, one side playing
           as "blue", the other as "red" on a 3x3 grid. Each player has five
