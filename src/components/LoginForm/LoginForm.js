@@ -1,16 +1,26 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Input from '../Input/Input';
 import s from './loginForm.module.css';
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = ({ onSubmit, isResetField = false }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRegistered, setRegistered] = useState(false);
 
+  useEffect(() => {
+    setEmail('');
+    setPassword('');
+  }, [isResetField]);
+
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit && onSubmit({ email, password, isRegistered });
+    onSubmit &&
+      onSubmit({
+        email,
+        password,
+        type: isRegistered ? 'Login' : 'Sign Up',
+      });
     setEmail('');
     setPassword('');
   };
@@ -43,7 +53,7 @@ const LoginForm = ({ onSubmit }) => {
 
       <div className={s.flex}>
         <button className={s.buttonLogin}>
-          {isRegistered ? 'Sign in' : 'Sign Up'}
+          {isRegistered ? 'Login' : 'Sign Up'}
         </button>
         <span className={s.span} onClick={handleLoginRegisterButton}>
           {isRegistered ? 'Register?' : 'Login?'}

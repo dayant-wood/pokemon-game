@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PokemonCard from '../../../../components/PokemonCard/PokemonCard';
 import FirebaseClass from '../../../../service/firebase';
@@ -9,6 +9,7 @@ import {
   selectedPokemonPlayer1,
   selectedPokemonPlayer2,
 } from '../../../../store/pokemons';
+import { selectLocalID } from '../../../../store/user';
 import s from './finish.module.css';
 
 const FinishPage = () => {
@@ -21,6 +22,7 @@ const FinishPage = () => {
   const [isDisabled, setDisabled] = useState(true);
   const [player2, setPlayer2] = useState(Object.entries(pokemonsPlayer2Redux));
 
+  const localId = useSelector(selectLocalID);
   const dispatch = useDispatch();
 
   const handlerBackToStart = e => {
@@ -31,7 +33,7 @@ const FinishPage = () => {
 
     if (winnerRedux === 1) {
       dispatch(clearState());
-      FirebaseClass.addPokemon({ ...choosePokemon, selected: false });
+      FirebaseClass.addPokemon({ ...choosePokemon, selected: false }, localId);
       history.replace('/game');
     }
   };
