@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../../../components/Layout/layout';
@@ -6,7 +6,6 @@ import PokemonCard from '../../../../components/PokemonCard/PokemonCard';
 import FirebaseClass from '../../../../service/firebase';
 import s from './start.module.css';
 import {
-  getPokemons,
   getPokemonsAsync,
   selectPokemonsData,
   selectPokemonsLoading,
@@ -23,11 +22,12 @@ const StartPage = () => {
   const history = useHistory();
 
   useEffect(() => {
-    FirebaseClass.getPokemonSoket(pokemons => {
-      setPokemonsState(pokemons);
-      dispatch(getPokemonsAsync());
-    });
-    return () => FirebaseClass.offPokemonSoket();
+    // FirebaseClass.getPokemonSoket(pokemons => {
+    //   setPokemonsState(pokemons);
+    //   dispatch(getPokemonsAsync());
+    // });
+    // return () => FirebaseClass.offPokemonSoket();
+    dispatch(getPokemonsAsync());
   }, []);
 
   useEffect(() => {
