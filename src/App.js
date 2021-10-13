@@ -31,7 +31,6 @@ const App = () => {
   const isPadding =
     location.pathname === '/' || location.pathname === '/game/board';
   const dispatch = useDispatch();
-  console.log(isUserLoading);
 
   useEffect(() => {
     dispatch(getUserAsynch());

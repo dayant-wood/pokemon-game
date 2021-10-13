@@ -16,7 +16,6 @@ import {
 const StartPage = () => {
   const pokemonsRedux = useSelector(selectPokemonsData);
   const selectedPokemonsRedux = useSelector(selectedPokemonPlayer1);
-  const isLoading = useSelector(selectPokemonsLoading);
   const dispatch = useDispatch();
   const [pokemons, setPokemonsState] = useState({});
   const history = useHistory();
