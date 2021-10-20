@@ -78,8 +78,10 @@ export const {
 export const getPokemonsAsync = () => async (dispatch, getState) => {
   const localId = selectLocalID(getState());
   dispatch(fetchPokemons());
+  const idToken = localStorage.getItem('idToken');
+  dispatch(fetchPokemons());
   const data = await fetch(
-    `https://pokemon-game-5a474-default-rtdb.firebaseio.com/${localId}/pokemons.json`
+    `https://pokemon-game-5a474-default-rtdb.firebaseio.com/${localId}/pokemons.json?auth=${idToken}`
   ).then(res => res.json());
   console.log(data);
   dispatch(fetchPokemonsResolve(data));
