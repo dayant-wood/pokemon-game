@@ -17,6 +17,8 @@ class Firebase {
   constructor() {
     this.fire = firebase;
     this.database = this.fire.database();
+    this.host = 'https://pokemon-game-5a474-default-rtdb.firebaseio.com';
+    this.localID = null;
   }
 
   getPokemonSoket = cb => {
@@ -40,10 +42,16 @@ class Firebase {
     this.database.ref(`pokemons/${key}`).set(pokemon);
   };
 
-  addPokemon = (data, localId) => {
-    const newKey = this.database.ref().child('pokemons').push().key;
-    // this.database.ref(`pokemons/` + newKey).set(data);
-    this.database.ref(`${localId}/pokemons/` + newKey).set(data);
+  IDToken = () => localStorage.getItem('idToken');
+
+  setLocalID = localId => (this.localID = localId);
+
+  addPokemon = async data => {
+    const res = await fetch(
+      `${this.host}/${this.localID}/pokemons.json?auth=${this.IDToken()}`,
+      { method: 'POST', body: JSON.stringify(data) }
+    ).then(res => res.json());
+    return res;
   };
 }
 

@@ -6,6 +6,7 @@ import LoginForm from '../LoginForm/LoginForm';
 import { NotificationManager } from 'react-notifications';
 import { useDispatch } from 'react-redux';
 import { getUserUpdateAsynch } from '../../store/user';
+import FirebaseClass from '../../service/firebase';
 
 const loginSignUpUser = async ({ email, password, type }) => {
   const requestOptions = {
@@ -66,6 +67,7 @@ const MenuHeader = ({ bgActive }) => {
       }
 
       localStorage.setItem('idToken', response.idToken);
+      FirebaseClass.setLocalID(response.localId);
       NotificationManager.success('Success!');
       dispatch(getUserUpdateAsynch());
       handleClickLogin();

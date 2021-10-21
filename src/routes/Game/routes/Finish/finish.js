@@ -33,7 +33,8 @@ const FinishPage = () => {
 
     if (winnerRedux === 1) {
       dispatch(clearState());
-      FirebaseClass.addPokemon({ ...choosePokemon, selected: false }, localId);
+      FirebaseClass.addPokemon({ ...choosePokemon, selected: false });
+      // FirebaseClass.addPokemon({ ...choosePokemon, selected: false }, localId);
       history.replace('/game');
     }
   };
